@@ -5,10 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulär</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-    <h1>Lägg till kurs</h1>
+    <div class="container">
+        <main>
+            <div class="content-wrapper">
+                <h1>Lägg till kurs</h1>
+                <form autocomplete="off" method="post" action="/add">
+                    <label for="coursecode">Kurskod</label>
+                    <input id="coursecode" name="coursecode" type="text">
+
+                    <label for="coursename">Kursnamn</label>
+                    <input id="coursename" name="coursename" type="text">
+
+                    <label for="syllabus">URL till kursplan</label>
+                    <input id="syllabus" name="syllabus" type="text">
+
+                    <label for="progression">Kursprogression</label>
+                    <select name="progression" id="progression">
+                        <option value="" disabled selected>Välj</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>
+
+                    <button type="submit">Spara</button>
+                    <p id="error-message" class="hidden"></p>
+                </form>
+            </div>
+        </main>
+    </div>
 </body>
 
 </html>

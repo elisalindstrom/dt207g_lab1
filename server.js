@@ -40,6 +40,23 @@ app.get("/about", (req, res) => {
     res.render("about");
 })
 
+// Formulärdata
+app.post("/add", async (req, res) => {
+    const coursecode = req.body.coursecode;
+    const coursename = req.body.coursename;
+    const syllabus = req.body.syllabus;
+    const progression = req.body.progression;
+
+    try {
+        const result = await client.query(
+            "INSERT INTO courses(coursecode, coursename, syllabus, progression) VALUES($1, $2, $3, $4)", [coursecode, coursename, syllabus, progression]
+        );
+        res.redirect("/");
+    } catch (error) {
+        console.log(error)
+    }
+});
+
 // Starta applikationen
 app.listen(process.env.PORT, () => {
     console.log("Servern startad på http://localhost:" + process.env.PORT)
