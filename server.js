@@ -1,11 +1,34 @@
+const { Client } = require("pg"); // PostgreSQL
+require('dotenv').config(); // Läser in variabler från env-filen
 const express = require("express");
-const app = express(); // Skapat webbserver
-const port = 3000; // Använder port 3000
-app.use(express.static("public"));
-app.set("view engine", "ejs");
+const app = express(); // Skapa webbserver
+app.set("view engine", "ejs"); // EJS som view engine
+app.use(express.static("public")); // Möjliggör statiska filer
+app.use(express.urlencoded({ extended: true })); // Utläsa formulärdata
+
+// Anslutning till databas
+const client = new Client({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    ssl: {
+        rejectUnauthorized: false,
+    },
+})
+
+//Anslut till databasen
+client.connect((err) => {
+    if (err) {
+        console.log("Connection error: " + err);
+    } else {
+        console.log("Connected to database");
+    }
+})
 
 // Routing
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     res.render("index");
 });
 
@@ -18,6 +41,6 @@ app.get("/about", (req, res) => {
 })
 
 // Starta applikationen
-app.listen(port, () => {
-    console.log("Servern är igång")
+app.listen(process.env.PORT, () => {
+    console.log("Servern startad på http://localhost:" + process.env.PORT)
 });
