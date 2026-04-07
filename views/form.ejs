@@ -10,10 +10,15 @@
 
 <body>
     <div class="container">
+        <header>
+            <a href="/" class="logo">Laboration 1</a>
+
+            <%- include ("partials/mainnav") %>
+        </header>
         <main>
             <div class="content-wrapper">
                 <h1>Lägg till kurs</h1>
-                <form autocomplete="off" method="post" action="/add">
+                <form autocomplete="off" method="post" action="/form">
                     <label for="coursecode">Kurskod</label>
                     <input id="coursecode" name="coursecode" type="text">
 
@@ -31,10 +36,10 @@
                     </select>
 
                     <button type="submit">Spara</button>
-                    <% if (errors.length> 0) { %>
+                    <% if (locals.errors.length> 0) { %>
                         <ul>
                             <% errors.forEach(error=> { %>
-                                <li id="error-message">
+                                <li class="error-message">
                                     <%= error %>
                                 </li>
                                 <% }) %>

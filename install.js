@@ -35,7 +35,7 @@ async function createTables() {
                 syllabus TEXT NOT NULL,
                 progression VARCHAR(1) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )
+                );
             `)
         console.log(res);
     } catch (err) {

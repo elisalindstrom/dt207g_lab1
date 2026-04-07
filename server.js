@@ -50,7 +50,7 @@ app.get("/about", (req, res) => {
 })
 
 // Formulärdata
-app.post("/add", async (req, res) => {
+app.post("/form", async (req, res) => {
     const coursecode = req.body.coursecode;
     const coursename = req.body.coursename;
     const syllabus = req.body.syllabus;
@@ -58,36 +58,57 @@ app.post("/add", async (req, res) => {
 
     let errors = [];
 
-    // Validera input
-    if (coursecode === "") {
-        errors.push("Fyll i kurskod");
-    }
-
-    if (coursename === "") {
-        errors.push("Fyll i kursnamn");
-    }
-
-    if (syllabus === "") {
-        errors.push("Fyll i URL till kursplan");
-    }
-
-    if (progression === "") {
-        errors.push("Välj progression");
-    }
-
-    if (errors.length > 0) {
-        return res.render("form", {
-            errors: errors,
-        })
-    }
-
     try {
-        const result = await client.query(
+        // Validera input
+        if (coursecode === "") {
+            errors.push("Fyll i kurskod");
+        }
+
+        /* let result = await client.query("SELECT * FROM form WHERE coursecode ILIKE $1", [coursecode]);
+        if (result.rows.length > 0) {
+            res.render("form", { errors });
+            return;
+        } */
+
+        if (coursename === "") {
+            errors.push("Fyll i kursnamn");
+        }
+
+        if (syllabus === "") {
+            errors.push("Fyll i URL till kursplan");
+        }
+
+        if (progression === "") {
+            errors.push("Välj progression");
+        }
+
+        // Hantera errors
+        if (errors.length > 0) {
+            res.render("form", { errors });
+            return;
+        }
+
+        // Lägg till värden i databasen
+        client.query(
             "INSERT INTO courses(coursecode, coursename, syllabus, progression) VALUES($1, $2, $3, $4)", [coursecode, coursename, syllabus, progression]
         );
+        // Redirect till startsida
         res.redirect("/");
     } catch (error) {
-        console.log(error);
+        console.error(error);
+    }
+});
+
+// Radera kurs
+app.get("/delete/:id", async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        await client.query("DELETE FROM courses WHERE id = $1", [id]);
+        // Redirect till startsida
+        res.redirect("/");
+    } catch (error) {
+        console.error(error);
     }
 });
 

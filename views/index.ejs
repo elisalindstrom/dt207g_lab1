@@ -10,6 +10,11 @@
 
 <body>
     <div class="container">
+        <header>
+            <a href="/" class="logo">Laboration 1</a>
+
+            <%- include ("partials/mainnav") %>
+        </header>
         <main>
             <div class="content-wrapper">
                 <h1>Sparade kurser</h1>
@@ -20,6 +25,7 @@
                             <th>Namn</th>
                             <th>Kursplan</th>
                             <th>Progression</th>
+                            <th>Ta bort</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +40,9 @@
                                 <td><a href="<%= course.syllabus %>">Kursplan</a></td>
                                 <td>
                                     <%= course.progression %>
+                                </td>
+                                <td>
+                                    <a class="btn" href="/delete/<%= course.id %>">X</a>
                                 </td>
                             </tr>
                             <% }) %>
