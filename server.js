@@ -64,12 +64,6 @@ app.post("/form", async (req, res) => {
             errors.push("Fyll i kurskod");
         }
 
-        /* let result = await client.query("SELECT * FROM form WHERE coursecode ILIKE $1", [coursecode]);
-        if (result.rows.length > 0) {
-            res.render("form", { errors });
-            return;
-        } */
-
         if (coursename === "") {
             errors.push("Fyll i kursnamn");
         }
@@ -89,7 +83,7 @@ app.post("/form", async (req, res) => {
         }
 
         // Lägg till värden i databasen
-        client.query(
+        await client.query(
             "INSERT INTO courses(coursecode, coursename, syllabus, progression) VALUES($1, $2, $3, $4)", [coursecode, coursename, syllabus, progression]
         );
         // Redirect till startsida
