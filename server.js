@@ -68,6 +68,14 @@ app.post("/form", async (req, res) => {
             errors.push("Fyll i kursnamn");
         }
 
+        /* Fick aldrig denna validering att fungera:
+
+        let result = await client.query("SELECT * FROM courses WHERE coursename ILIKE $1", [coursename]);
+        
+        if (result.rows.length > 0) {
+            errors.push("Kursen är redan sparad")
+        } */
+
         if (syllabus === "") {
             errors.push("Fyll i URL till kursplan");
         }
