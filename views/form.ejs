@@ -25,13 +25,21 @@
 
                     <label for="progression">Kursprogression</label>
                     <select name="progression" id="progression">
-                        <option value="" disabled selected>Välj</option>
+                        <option value="" selected hidden>Välj</option>
                         <option value="A">A</option>
                         <option value="B">B</option>
                     </select>
 
                     <button type="submit">Spara</button>
-                    <p id="error-message" class="hidden"></p>
+                    <% if (errors.length> 0) { %>
+                        <ul>
+                            <% errors.forEach(error=> { %>
+                                <li id="error-message">
+                                    <%= error %>
+                                </li>
+                                <% }) %>
+                        </ul>
+                        <% } %>
                 </form>
             </div>
         </main>

@@ -29,11 +29,20 @@ client.connect((err) => {
 
 // Routing
 app.get("/", async (req, res) => {
-    res.render("index");
+    try {
+        const result = await client.query(
+            "SELECT * FROM courses ORDER BY progression ASC"
+        );
+        res.render("index", { courses: result.rows });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 app.get("/form", (req, res) => {
-    res.render("form");
+    res.render("form", {
+        errors: []
+    });
 });
 
 app.get("/about", (req, res) => {
@@ -47,13 +56,38 @@ app.post("/add", async (req, res) => {
     const syllabus = req.body.syllabus;
     const progression = req.body.progression;
 
+    let errors = [];
+
+    // Validera input
+    if (coursecode === "") {
+        errors.push("Fyll i kurskod");
+    }
+
+    if (coursename === "") {
+        errors.push("Fyll i kursnamn");
+    }
+
+    if (syllabus === "") {
+        errors.push("Fyll i URL till kursplan");
+    }
+
+    if (progression === "") {
+        errors.push("Välj progression");
+    }
+
+    if (errors.length > 0) {
+        return res.render("form", {
+            errors: errors,
+        })
+    }
+
     try {
         const result = await client.query(
             "INSERT INTO courses(coursecode, coursename, syllabus, progression) VALUES($1, $2, $3, $4)", [coursecode, coursename, syllabus, progression]
         );
         res.redirect("/");
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 });
 
