@@ -41,7 +41,8 @@ app.get("/", async (req, res) => {
 
 app.get("/form", (req, res) => {
     res.render("form", {
-        errors: []
+        errors: [],
+        formData: {}
     });
 });
 
@@ -60,21 +61,21 @@ app.post("/form", async (req, res) => {
 
     try {
         // Validera input
-        if (coursecode === "") {
-            errors.push("Fyll i kurskod");
-        }
-
         let result = await client.query("SELECT * FROM courses WHERE coursecode ILIKE $1", [coursecode]);
-        
+
         if (result.rows.length > 0) {
             errors.push("Kursen är redan sparad")
+        }
+
+        if (coursecode === "") {
+            errors.push("Fyll i kurskod");
         }
 
         if (coursename === "") {
             errors.push("Fyll i kursnamn");
         }
 
-       if (syllabus === "") {
+        if (syllabus === "") {
             errors.push("Fyll i URL till kursplan");
         }
 
@@ -82,9 +83,17 @@ app.post("/form", async (req, res) => {
             errors.push("Välj progression");
         }
 
-        // Hantera errors
+        // Hantera errors + skicka med inputvärden
         if (errors.length > 0) {
-            res.render("form", { errors });
+            res.render("form", {
+                errors,
+                formData: {
+                    coursecode,
+                    coursename,
+                    syllabus,
+                    progression
+                }
+            });
             return;
         }
 

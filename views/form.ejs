@@ -20,13 +20,13 @@
                 <h1>Lägg till kurs</h1>
                 <form autocomplete="off" method="post" action="/form">
                     <label for="coursecode">Kurskod</label>
-                    <input id="coursecode" name="coursecode" type="text">
+                    <input id="coursecode" name="coursecode" type="text" value="<%= formData.coursecode %>">
 
                     <label for="coursename">Kursnamn</label>
-                    <input id="coursename" name="coursename" type="text">
+                    <input id="coursename" name="coursename" type="text" value="<%= formData.coursename %>">
 
                     <label for="syllabus">URL till kursplan</label>
-                    <input id="syllabus" name="syllabus" type="text">
+                    <input id="syllabus" name="syllabus" type="text" value="<%= formData.syllabus %>">
 
                     <label for="progression">Kursprogression</label>
                     <select name="progression" id="progression">
